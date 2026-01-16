@@ -232,6 +232,9 @@ docs/_build/
 *.old
 *.orig
 *.save
+.git_backup_*
+.git_old_*
+.git-backup-*
 
 # 系统文件
 desktop.ini
