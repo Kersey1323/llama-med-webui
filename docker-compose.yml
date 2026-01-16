@@ -1,0 +1,53 @@
+version: '3'
+services:
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+  backend:
+    build: ./backend
+    extra_hosts:
+      host.docker.internal: host-gateway
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+    working_dir: /app/backend
+    environment:
+      - PYTHONPATH=/app/backend
+      - FLASK_ENV=production
+      - SECRET_KEY=JX9oA5EBhPskGUDjm9IBBRaAwyyWtvZ4qiMeOyXKDyyqfykmzFK1ZkM5Q5ohhnLP
+      - JWT_SECRET_KEY=JDkYUqR/oVY62ilqNRUDKQAZnrBRipkCwMzp2oAe2fd5So/i7wgOAMm27kcUKUYl
+      - SECURITY_PASSWORD_SALT=vZVu7ScsUMuOhgtBJykWufsRXjDUUbCjuKKL+ubL5nOtaTroQXA2M0kL+D+6W1Xx
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+    command: [ "gunicorn", "-w", "3", "-t", "43200", "--timeout", "43200", "--keep-alive", "5", "-b", "0.0.0.0:8000", "app:create_app()" ]
+    depends_on:
+      - mysql
+      - redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6389:6389"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+  mysql:
+    image: mysql:8.0
+    environment:
+
+      MYSQL_ROOT_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: llama_med_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+    ports:
+      - "33306:33306"
+
+volumes:
+  redis_data:

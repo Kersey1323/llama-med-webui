@@ -1,0 +1,23 @@
+{
+  "name": "llama_med_webui",
+  "version": "1.0.0",
+  "description": "A web UI for llama-based medical AI",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@heroicons/vue": "^2.2.0",
+    "axios": "^1.7.8",
+    "element-plus": "^2.9.0",
+    "vue": "^3.2.0",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^5.4.11"
+  }
+}

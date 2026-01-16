@@ -1,0 +1,334 @@
+# ===========================================
+# llama_med_webui - Git Ignore File
+# ===========================================
+
+# 操作系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+~$*
+
+# Python缓存和虚拟环境
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 虚拟环境
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# pip包管理
+pip-wheel-metadata/
+pip-delete-this-directory.txt
+
+# 单元测试/覆盖率
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.pytest_cache/
+htmlcov/
+
+# 日志文件
+*.log
+*.log.*
+logs/
+
+# Node.js相关
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# 构建输出
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# PyInstaller打包文件（特别大的文件）
+*.pkg
+*.pyz
+*.spec
+*.exe
+*.app
+*.dmg
+*.msi
+*.whl
+*.egg
+*.tar.gz
+*.zip
+build/*.pkg
+build/*.pyz
+build/*.exe
+build/*.app
+build/*.dmg
+build/*.msi
+
+# 包管理
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+shrinkwrap.yaml
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# IDE和编辑器
+.idea/
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+.history/
+.session
+*.sublime-*
+*.sublime-project
+*.sublime-workspace
+
+# 项目特定目录
+uploads/
+backend/uploads/
+backend/outputs/
+frontend/dist/
+dist/
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 临时文件
+*.tmp
+*.temp
+.temp/
+tmp/
+temp/
+
+# 缓存文件
+.cache/
+.cache/
+.cache/
+
+# 配置文件（根据需求决定是否忽略）
+# config.py  # 注意：backend/config.py 应该保留，因为它包含应用配置
+# .env       # 已在上面的环境变量部分包含
+
+# Docker相关
+.dockerignore
+*.dockerignore
+
+# 文档生成
+docs/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# 压缩文件
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# 媒体文件（根据需求决定是否忽略）
+# *.mp4
+# *.mp3
+# *.wav
+# *.avi
+# *.mov
+
+# 图像文件（根据需求决定是否忽略）
+# *.jpg
+# *.jpeg
+# *.png
+# *.gif
+# *.bmp
+# *.tiff
+
+# 字体文件（根据需求决定是否忽略）
+# *.ttf
+# *.otf
+# *.woff
+# *.woff2
+
+# 办公文档（根据需求决定是否忽略）
+# *.doc
+# *.docx
+# *.xls
+# *.xlsx
+# *.ppt
+# *.pptx
+# *.pdf
+
+# 安全文件
+*.pem
+*.key
+*.crt
+*.csr
+
+
+# 用户上传文件
+.uploads/
+# 备份文件
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+
+# 系统文件
+desktop.ini
+
+# 特定于Windows
+*.cab
+*.msi
+*.msm
+*.msp
+
+# 特定于Linux
+*~
+
+# 特定于macOS
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# ===========================================
+# 项目特定规则
+# ===========================================
+
+# 前端构建输出
+frontend/dist/
+
+# 后端上传和输出目录
+backend/uploads/
+backend/outputs/
+
+# 全局上传目录
+uploads/
+
+# 测试文件（根据需求决定是否忽略）
+# test_async_batch.py  # 如果需要保留测试文件，请注释掉这行
+
+# 开发环境配置文件
+.env.development
+.env.test
+.env.production
+
+# 本地开发配置
+.local.env
+.local-config.*
+
+# 数据库迁移文件（如果需要保留，请注释掉）
+# backend/migrations/  # 注意：数据库迁移文件通常应该保留
+
+# 数据文件（根据需求决定是否忽略）
+# backend/data/  # 注意：数据文件可能需要保留，特别是种子数据
+
+# 字体文件（根据需求决定是否忽略）
+# backend/dejavu/  # 注意：字体文件可能需要保留
+
+# 健康检查脚本（根据需求决定是否忽略）
+# backend/health_check.py  # 注意：健康检查脚本可能需要保留
+
+# 目录树生成脚本（根据需求决定是否忽略）
+# backend/tree.py  # 注意：目录树生成脚本可能需要保留
+
+# ===========================================
+# 重要说明
+# ===========================================
+
+# 以下文件应该被保留（不要忽略）：
+# - backend/config.py           # Flask应用配置
+# - backend/requirements.txt    # Python依赖
+# - frontend/package.json       # Node.js依赖
+# - docker-compose.yml          # Docker容器配置
+# - frontend/vite.config.js     # Vite构建配置
+# - backend/app.py              # Flask应用入口
+# - frontend/src/main.js        # Vue应用入口
+# - backend/models/             # 数据模型
+# - backend/routes/             # API路由
+# - backend/services/           # 业务服务
+# - backend/utils/              # 工具函数
+# - frontend/src/               # 前端源代码
+# - backend/APP/                # 应用模块
+# - backend/auth/               # 认证相关
+# - backend/GPT/                # GPT相关模块
+# - backend/security/           # 安全配置
+# - frontend/nginx/             # Nginx配置
+# - frontend/public/            # 静态资源
+# - frontend/src/components/    # Vue组件
+# - frontend/src/pages/         # 页面组件
+# - frontend/src/router/        # 路由配置
+# - frontend/src/utils/         # 工具函数
+# - frontend/src/views/         # 视图组件
