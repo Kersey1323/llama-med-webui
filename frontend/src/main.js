@@ -1,9 +1,11 @@
-import { createApp } from 'vue';
-import Main from './views/main.vue'; // 使用新的主组件
-import router from './router';
-import ElementPlus from 'element-plus';
-import 'element-plus/dist/index.css';
-import * as ElementPlusIconsVue from '@element-plus/icons-vue';
+import { createApp } from "vue";
+import Main from "./views/main.vue"; // 使用新的主组件
+import router from "./router";
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
+import "./styles/tailwind.css";
+import "./studio/studio.css";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 // 创建 Vue 应用
 const app = createApp(Main);
@@ -20,4 +22,4 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 // 挂载应用
-app.mount('#app');
+app.mount("#app");

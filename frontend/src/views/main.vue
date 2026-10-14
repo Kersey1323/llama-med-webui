@@ -1,12 +1,7 @@
-<!-- Main.vue -->
 <template>
-  <div id="main">
-    <router-view></router-view>
-  </div>
+  <router-view v-if="$route.meta.authPage || $route.meta.standalone" />
+  <StudioShell v-else><router-view /></StudioShell>
 </template>
-
-<script>
-export default {
-  name: 'Main'
-}
+<script setup>
+import StudioShell from "../studio/StudioShell.vue";
 </script>

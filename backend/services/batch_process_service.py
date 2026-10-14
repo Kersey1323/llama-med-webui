@@ -87,7 +87,10 @@ class BatchProcessService:
         try:
 
             # 读取Excel文件
-            df = pd.read_excel(job.original_file_path)
+            if job.original_file_path.lower().endswith('.csv'):
+                df = pd.read_csv(job.original_file_path, encoding='utf-8-sig')
+            else:
+                df = pd.read_excel(job.original_file_path)
             print(os.getcwd())
             total_rows = len(df)
             job.total_rows = total_rows
@@ -170,7 +173,7 @@ class BatchProcessService:
                             row_number=i + 1,
                             error_type=check_data["错误类型"],
                             error_content=check_data["分析过程"],
-                            suggested_correction=f"修改建议: {check_data["修改建议"]}",
+                            suggested_correction="修改建议: " + str(check_data["修改建议"]),
                             original_text=description,
                             original_diagnosis=check_data['标注后的真实诊断'],
                             gen_diagnosis=gen_report,

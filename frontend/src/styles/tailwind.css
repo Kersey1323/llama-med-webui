@@ -1,0 +1,29 @@
+/* Use Tailwind utilities without resetting the existing Vue / Element Plus UI. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@source "../components/ui";
+
+@theme inline {
+  --color-primary: #18181b;
+  --color-primary-foreground: #ffffff;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #52525b;
+}
+
+.medical-chat {
+  color: #18181b;
+  line-height: 1.7;
+}
+
+.medical-chat [data-slot="bubble"] {
+  border: 1px solid transparent;
+}
+
+.medical-chat [data-slot="bubble"][data-variant="muted"] {
+  border-color: #e4e4e7;
+}
+
+.medical-chat time {
+  font-variant-numeric: tabular-nums;
+}

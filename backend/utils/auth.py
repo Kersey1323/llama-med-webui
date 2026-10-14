@@ -1,33 +1,35 @@
+"""Authentication gate with an explicit, reversible local preview switch."""
+import os
 from functools import wraps
-from flask import jsonify, g, request
+from flask import current_app, jsonify, g, session
 from flask_jwt_extended import verify_jwt_in_request, get_jwt_identity
+from flask_jwt_extended.exceptions import JWTExtendedException
+from jwt.exceptions import PyJWTError
 from models.user import User
 
-# def login_required(f):
-#     @wraps(f)
-#     def decorated(*args, **kwargs):
-#         try:
-#             verify_jwt_in_request()
-#             current_user_id = get_jwt_identity()
-#             # 存储用户ID到g对象中，以便在视图函数中使用
-#             g.user_id = current_user_id
-#             print(f"Current user ID: {get_jwt_identity()}")  # 打印用户标识
-#             # 检查用户是否存在
-#             current_user = User.query.get(current_user_id)
-#             if not current_user:
-#                 return jsonify({'error': '用户不存在'}), 404
-#
-#             return f(*args, **kwargs)
-#         except Exception as e:
-#             return jsonify({'error': '请先登录', 'details': str(e)}), 401
-#     return decorated
 
-# auth.py
 def login_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        # 临时跳过验证
-        dummy_user = User.query.first()
-        g.user_id = dummy_user.id if dummy_user else 1  # 假设存在ID=1的测试用户
+        disabled = current_app.config.get(
+            'AUTH_DISABLED', os.environ.get('AUTH_DISABLED', 'true').lower() == 'true'
+        )
+        if disabled:
+            # Use a chosen existing account, never an arbitrary first user or a fake ID.
+            user_id = current_app.config.get('DEMO_USER_ID', os.environ.get('DEMO_USER_ID', '1'))
+            user = User.query.get(user_id)
+            if not user or not user.is_active:
+                return jsonify({'error': '免登录账户不可用，请配置 DEMO_USER_ID 为有效的现有用户 ID'}), 503
+        else:
+            try:
+                verify_jwt_in_request()
+                user = User.query.get(get_jwt_identity())
+            except (JWTExtendedException, PyJWTError):
+                return jsonify({'error': '请先登录'}), 401
+            if not user or not user.is_active:
+                return jsonify({'error': '账户不可用'}), 401
+        # Existing batch and annotation APIs read session; newer APIs read g.
+        g.user_id = user.id
+        session['user_id'] = user.id
         return f(*args, **kwargs)
     return decorated

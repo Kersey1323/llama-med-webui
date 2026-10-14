@@ -51,7 +51,8 @@ def upload_file():
 @login_required
 def start_process():
     try:
-        result = batch_service.start_batch_process(job_id=batch_service.current_job_id)
+        job_id = request.args.get('job_id', batch_service.current_job_id, type=int)
+        result = batch_service.start_batch_process(job_id=job_id)
     except Exception as e:
         import traceback
         # 输出详细错误堆栈
