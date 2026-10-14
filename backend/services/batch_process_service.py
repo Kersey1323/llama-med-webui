@@ -6,14 +6,14 @@ from datetime import datetime
 
 from flask import jsonify
 
-from backend.models.batch_job import BatchJob
-from backend.models.error_record import ErrorRecord
-from backend.models.error_type import ErrorType
-from backend.models import db
+from models.batch_job import BatchJob
+from models.error_record import ErrorRecord
+from models.error_type import ErrorType
+from models import db
 from openpyxl import Workbook
-from backend.utils.clients import Client, LocalClient
-from backend.utils.Demo_3_desc import main_desc
-from backend.config import API_KEY, BASE_URL, MODEL_NAME, LOCAL_API_KEY, LOCAL_BASE_URL, LOCAL_MODEL_NAME
+from utils.clients import Client, LocalClient
+from utils.Demo_3_desc import main_desc
+from config import API_KEY, BASE_URL, MODEL_NAME, LOCAL_API_KEY, LOCAL_BASE_URL, LOCAL_MODEL_NAME
 import unicodedata
 import re
 
@@ -126,6 +126,7 @@ class BatchProcessService:
                     description = record['影像描述']
                     true_report = record['影像诊断']
                     # body_part = record['检查部位']
+
                     local_client = LocalClient(API_KEY=LOCAL_API_KEY, base_url=LOCAL_BASE_URL,
                                                model_name=LOCAL_MODEL_NAME)
                     client = Client(API_KEY=API_KEY, base_url=BASE_URL, model_name=MODEL_NAME)
@@ -212,8 +213,10 @@ class BatchProcessService:
 
                 return result, 200
             except Exception as e:
-                print(str(e))
-                return jsonify({"error": f"Error during batch-process: {str(e)}"}), 500
+                import traceback
+                print("Error during batch-process:")
+                traceback.print_exc()  # 打印详细堆栈
+                return jsonify({"error": f"批处理内部错误: {str(e)}"}), 500
 
         except Exception as e:
             job.status = 'failed'
@@ -316,7 +319,7 @@ class BatchProcessService:
         if not error:
             raise ValueError(f"找不到ID为{error_id}的错误记录")
         # 创建修正历史
-        from backend.models.correction_history import CorrectionHistory
+        from models.correction_history import CorrectionHistory
         correction_data = {
             "error_record_id": error_id,
             "user_id": user_id,

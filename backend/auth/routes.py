@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, session
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from backend.models.user import User, db
-from backend.models.role import Role
-from backend.models.user_role import UserRole
-from backend.security.auth_security import (
+from models.user import User, db
+from models.role import Role
+from models.user_role import UserRole
+from security.auth_security import (
     PasswordValidator, login_tracker, SecurityConfig, 
     JWTManager, SessionManager, log_security_event,
     require_security_headers

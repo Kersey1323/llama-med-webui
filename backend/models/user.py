@@ -39,7 +39,7 @@ class User(db.Model):
         history.append(self.password_hash)
         
         # 保持历史记录在指定大小内
-        from backend.security.auth_security import SecurityConfig
+        from security.auth_security import SecurityConfig
         if len(history) > SecurityConfig.PASSWORD_HISTORY_SIZE:
             history = history[-SecurityConfig.PASSWORD_HISTORY_SIZE:]
         
@@ -70,7 +70,7 @@ class User(db.Model):
     def increment_failed_attempts(self):
         """增加失败登录次数"""
         self.failed_login_attempts += 1
-        from backend.security.auth_security import SecurityConfig
+        from security.auth_security import SecurityConfig
         
         if self.failed_login_attempts >= SecurityConfig.ACCOUNT_LOCKOUT_THRESHOLD:
             self.account_locked = True

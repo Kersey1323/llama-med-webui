@@ -900,8 +900,8 @@ def find_top_related_entities(entity_label, inspection_area_name, top_n=5):
     #     print(f"实体: {entity['name']}，标签: {entity['labels']}，相关性分数: {entity['rel_count']}")
     return top_entities
 
-from backend.config import API_KEY, BASE_URL, MODEL_NAME
-from backend.utils.clients import Client
+from config import API_KEY, BASE_URL, MODEL_NAME
+from utils.clients import Client
 def main_desc(body_part, description):
 
     pinyin_index, length_index = build_pinyin_index()  # 构建拼音-词汇倒排索引

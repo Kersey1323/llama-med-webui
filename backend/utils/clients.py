@@ -5,6 +5,7 @@ import json
 from typing import Optional, List, Mapping, Any
 import regex
 import pandas as pd
+from config import MODEL_NAME
 SYSTEM_PROMPT = """
     【任务说明】
     根据生成诊断（G）和真实诊断（T）对比，仅修改错误类型，以T为标准对G进行修改:
@@ -19,7 +20,7 @@ SYSTEM_PROMPT = """
     1. 格式：严格输出JSON，包含以下字段：
     - 是否修改（"是"或"否"）
     - 修改建议（若无需修改则填"无"）
-    - 分析过程（需明确错误位置及修改依据）
+    - 分析过程（需明确错误位置及修改依据） 
     - 标注后的真实诊断：：在真实诊断中用 `[ ]` 标注出错误部分，其余内容保持不变
     2. 示例：
     {
@@ -138,7 +139,7 @@ class Client:
                     {"role": "user", "content": true}]
         try:
             while not flag and count < 3:
-                result = self.client.chat.completions.create(messages=messages, model="deepseek-chat")
+                result = self.client.chat.completions.create(messages=messages, model=MODEL_NAME)
                 json_data = extract_json_from_text(result.choices[0].message.content)
                 print(json_data)
                 if json_data == None:
@@ -171,7 +172,7 @@ class Client:
                     {"role": "user", "content": pred}]
         try:
             while not flag and count < 3:
-                result = self.client.chat.completions.create(messages=messages, model="deepseek-chat")
+                result = self.client.chat.completions.create(messages=messages, model=MODEL_NAME)
                 json_data = extract_json_from_text(result.choices[0].message.content)
                 print(json_data)
                 if  json_data == None:

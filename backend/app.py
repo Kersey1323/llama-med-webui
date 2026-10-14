@@ -1,22 +1,21 @@
 from flask import Flask
-from backend.routes.batch_process import batch_bp
-from backend.routes.annotation import annotation_bp
+from routes.batch_process import batch_bp
+from routes.annotation import annotation_bp
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from backend.models import db
-from backend.models.role import Role
-from backend.models.correction_history import CorrectionHistory
-from backend.models.annotation_group import AnnotationGroup
-from backend.models.annotation_history import AnnotationHistory
+from models import db
+from models.role import Role
+from config import config
 # 导入auth蓝图
-from backend.auth.routes import auth_bp
-from config import Config
+from auth.routes import auth_bp
 import os
 
+
+env = os.environ.get('FLASK_ENV', 'development')
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
-
+    app.config.from_object(config[env])
+    
     # 初始化扩展
     CORS(app, resources={
         r"/*": {
@@ -26,8 +25,8 @@ def create_app():
                 "http://127.0.0.1:5173",
                 "http://0.0.0.0:8000",
                 "http://0.0.0.0:5173",
-                "http://192.168.1.128:5173",
-                "http://192.168.1.128:8000",
+                "http://localhost:8003",
+                "http://0.0.0.0:8003",
                 "http://localhost",  # 添加localhost支持
                 "*"
             ],
@@ -40,7 +39,7 @@ def create_app():
     jwt = JWTManager(app)
     
     # 初始化安全配置
-    from backend.security.auth_security import SecurityConfig
+    from security.auth_security import SecurityConfig
     SecurityConfig.JWT_SECRET_KEY = app.config['JWT_SECRET_KEY']
     
     # 注册蓝图
@@ -49,7 +48,7 @@ def create_app():
     app.register_blueprint(batch_bp,  url_prefix='/api/batch')
     app.register_blueprint(annotation_bp)
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
-    
+
     # 创建数据库表
     with app.app_context():
         # 显式检查并且删除表（仅在开发环境中使用）
@@ -66,11 +65,14 @@ def create_app():
             user_role = Role(name='user', description='Regular user')
             db.session.add(user_role)
             db.session.commit()
-    
+        
     return app
 
-if __name__ == '__main__':
-    app = create_app()
-    # 使用环境变量中的端口，默认为5000
-    port = int(os.environ.get('PORT', 8000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+# if __name__ == '__main__':
+#     if os.environ.get('FLASK_ENV') == 'production':
+#         print("-----生产环境启动----")
+#     else:
+#         app = create_app()
+#         # 使用环境变量中的端口，默认为5000
+#         port = int(os.environ.get('PORT', 8000))
+#         app.run(host='0.0.0.0', port=port, debug=True)

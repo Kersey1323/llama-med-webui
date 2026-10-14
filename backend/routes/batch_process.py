@@ -1,7 +1,8 @@
 import os
 from flask import Blueprint, request, jsonify, current_app, g, session
-from backend.services.batch_process_service import BatchProcessService
-from backend.utils.auth import login_required
+from services.batch_process_service import BatchProcessService
+from utils.auth import login_required
+
 from flask import send_from_directory
 from io import BytesIO
 import pandas as pd
@@ -49,10 +50,15 @@ def upload_file():
 @batch_bp.route('/startProcess', methods=['GET'])
 @login_required
 def start_process():
+    try:
+        result = batch_service.start_batch_process(job_id=batch_service.current_job_id)
+    except Exception as e:
+        import traceback
+        # 输出详细错误堆栈
+        print("Error in /startProcess endpoint:")
+        traceback.print_exc()
+        return jsonify({'error': f'接口内部错误: {str(e)}'}), 500
 
-    result = batch_service.start_batch_process(job_id=batch_service.current_job_id)
-    print(result)
-    print(type(result))
     if isinstance(result, tuple):
         data, status_code = result
         print(data,status_code)
@@ -160,8 +166,8 @@ def export_annotation(job_id):
     """导出该批次下所有标注内容（annotation_groups）为Excel"""
     try:
         # 1. 获取该批次下所有error_record的id
-        from backend.models.error_record import ErrorRecord
-        from backend.models.annotation_group import AnnotationGroup
+        from models.error_record import ErrorRecord
+        from models.annotation_group import AnnotationGroup
         error_ids = [e.id for e in ErrorRecord.query.filter_by(batch_job_id=job_id).all()]
         if not error_ids:
             return jsonify({'error': '该批次下无错误数据'}), 404
@@ -190,6 +196,8 @@ def export_annotation(job_id):
             mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
     except Exception as e:
-        print(e)
+        import traceback
+        print("Error in export_annotation:")
+        traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 

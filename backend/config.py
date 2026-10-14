@@ -1,26 +1,27 @@
 import os
 from datetime import timedelta
 
-from sqlalchemy import create_engine
 
-API_KEY = "sk-92gycZdQsFNfCqCy68207e5e824c4b7aB6CdC0A656522482"
-BASE_URL = "https://api.vveai.com/v1"
-MODEL_NAME = "deepseek-chat"
-LOCAL_API_KEY = "0"
-LOCAL_BASE_URL = "http://localhost:5000/v1"
-LOCAL_MODEL_NAME = "test"
+# 通用API配置
+API_KEY = os.environ.get("API_KEY", "sk-uajjcpbmrxhckaapbigsbbaidyqbnenyyzwnohsfzybxgrtd")
+BASE_URL = os.environ.get("BASE_URL", "https://api.siliconflow.cn/v1")
+MODEL_NAME = os.environ.get("MODEL_NAME", "Pro/deepseek-ai/DeepSeek-V3")
+LOCAL_API_KEY = os.environ.get("LOCAL_API_KEY", "0")
+LOCAL_BASE_URL = os.environ.get("LOCAL_BASE_URL", "http://host.docker.internal:5000/v1")
+LOCAL_MODEL_NAME = os.environ.get("LOCAL_MODEL_NAME", "test")
+
 
 class Config:
     """基础配置类"""
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production-123456789'
     
-    # 数据库配置
-    MYSQL_HOST = os.environ.get('MYSQL_HOST') or 'localhost'
+    # docker数据库配置
+    MYSQL_HOST = os.environ.get('MYSQL_HOST') or 'mysql'
     MYSQL_PORT = int(os.environ.get('MYSQL_PORT') or 3306)
-    MYSQL_USER = os.environ.get('MYSQL_USER') or 'root'
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD') or '12345'
+    MYSQL_USER = os.environ.get('MYSQL_USER') or 'user'
+    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD') or 'password'
     MYSQL_DATABASE = os.environ.get('MYSQL_DATABASE') or 'llama_med_db'
-    
+
     # SQLAlchemy配置
     SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}?charset=utf8mb4'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -50,14 +51,11 @@ class Config:
     UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
     OUTPUT_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'outputs')
     
-    # API配置
-    API_KEY = os.environ.get('API_KEY') or 'sk-92gycZdQsFNfCqCy68207e5e824c4b7aB6CdC0A656522482'
-    BASE_URL = os.environ.get('BASE_URL') or 'https://api.openai.com/v1'
-    MODEL_NAME = os.environ.get('MODEL_NAME') or 'deepseek-chat'
+
     
     # 本地API配置
     LOCAL_API_KEY = os.environ.get('LOCAL_API_KEY') or '0'
-    LOCAL_BASE_URL = os.environ.get('LOCAL_BASE_URL') or 'http://192.168.123.194:5000/v1'
+    LOCAL_BASE_URL = os.environ.get('LOCAL_BASE_URL') or 'http://host.docker.internal:5000/v1'
     LOCAL_MODEL_NAME = os.environ.get('LOCAL_MODEL_NAME') or 'test'
     
     # 安全配置
@@ -131,12 +129,33 @@ class DevelopmentConfig(Config):
         'ENABLE_HTTPS_ONLY': False,
         'LOG_LEVEL': 'DEBUG'
     }
+    # 本地数据库配置
+    MYSQL_HOST = os.environ.get('MYSQL_HOST') or 'localhost'
+    MYSQL_PORT = int(os.environ.get('MYSQL_PORT') or 3306)
+    MYSQL_USER = os.environ.get('MYSQL_USER') or 'root'
+    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD') or '12345'
+    MYSQL_DATABASE = os.environ.get('MYSQL_DATABASE') or 'llama_med_db'
+    # SQLAlchemy配置
+    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}?charset=utf8mb4'
+    # 开发环境安全配置（相对宽松）
+    SECURITY_CONFIG = {
+        **Config.SECURITY_CONFIG,
+        'MIN_PASSWORD_LENGTH': 8,
+        'MAX_LOGIN_ATTEMPTS': 10,
+        'LOCKOUT_DURATION': 5,
+        'ENABLE_HTTPS_ONLY': False,
+        'LOG_LEVEL': 'DEBUG'
+    }
 
 class ProductionConfig(Config):
-    """生产环境配置"""
     DEBUG = False
     TESTING = False
-    
+    MYSQL_HOST = os.environ.get('MYSQL_HOST') or 'mysql'
+    MYSQL_PORT = int(os.environ.get('MYSQL_PORT') or 33306)
+    MYSQL_USER = os.environ.get('MYSQL_USER') or 'user'
+    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD') or 'password'
+    MYSQL_DATABASE = os.environ.get('MYSQL_DATABASE') or 'llama_med_db'
+
     # 生产环境检查（可选）
     def __init__(self):
         super().__init__()
@@ -182,3 +201,4 @@ config = {
     'testing': TestingConfig,
     'default': DevelopmentConfig
 } 
+

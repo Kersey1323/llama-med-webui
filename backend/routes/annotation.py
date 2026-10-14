@@ -2,13 +2,13 @@ import json
 from flask import Blueprint, request, jsonify, session
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
-# from backend.models import db, ErrorRecord, AnnotationGroup, AnnotationHistory, User
-from backend.models.error_record import ErrorRecord
-from backend.models.user import User
-from backend.models.annotation_group import AnnotationGroup
-from backend.models.annotation_history import AnnotationHistory
-from backend.models import db
-from backend.utils.auth import login_required
+# from models import db, ErrorRecord, AnnotationGroup, AnnotationHistory, User
+from models.error_record import ErrorRecord
+from models.user import User
+from models.annotation_group import AnnotationGroup
+from models.annotation_history import AnnotationHistory
+from models import db
+from utils.auth import login_required
 
 annotation_bp = Blueprint('annotation', __name__)
 
