@@ -1,0 +1,19 @@
+# Reinstall dependencies from the committed package manifests and lockfile.
+node_modules/
+
+# Generated frontend bundles and caches.
+/frontend/dist/
+.vite/
+
+# Python bytecode and caches.
+__pycache__/
+*.py[cod]
+
+# Runtime report uploads and generated exports.
+/backend/uploads/
+/backend/outputs/
+
+# Existing large local datasets and analysis artifacts (>= 1 MiB).
+/backend/data/test.csv
+/backend/data/test.xlsx
+/backend/utils/old_and_1234.txt
