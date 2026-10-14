@@ -17,3 +17,6 @@ __pycache__/
 /backend/data/test.csv
 /backend/data/test.xlsx
 /backend/utils/old_and_1234.txt
+
+# Local build artifacts
+/build/
